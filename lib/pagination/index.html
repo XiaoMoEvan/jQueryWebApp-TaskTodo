@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="cn-ZH">
+
+<head>
+    <meta charset="UTF-8">
+    <title>pagination.js - 分页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../favicon.ico" rel="icon" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="./common/reset.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="./common/highlight.min.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="./common/common.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="./pagination.css" media="screen">
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+    <div class="wrapper">
+               
+                    <div class="m-style M-box3">
+						<p>1456456464646466</p>
+						<p>1456456464646466</p>
+						<p>1456456464646466</p>
+						<p>1456456464646466</p>
+						<p>1456456464646466</p>
+						<p>1456456464646466</p>
+						<p>1456456464646466</p><p>1456456464646466</p>
+						<p>1456456464646466</p>
+					</div>
+                   
+  
+    </div>
+    <script src="./common/highlight.min.js"></script>
+    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script src="./jquery.pagination.js"></script>
+    <script>
+        $(function () {       
+          
+            $('.M-box3').pagination({
+                pageCount: 50,
+                jump: true,
+                coping: true,
+                homePage: '首页',
+                endPage: '末页',
+                prevContent: '上页',
+                nextContent: '下页',
+                callback: function (api) {
+                    console.log(api.getCurrent())
+                }
+            });
+
+           
+        });
+    </script>
+</body>
+
+</html>

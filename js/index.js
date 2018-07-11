@@ -9,7 +9,9 @@
         $task_list = $(".task-list-body"),
         $task_content = $("#taskContent"),
         $taskCount = $(".taskCount"),
-        task_list = {};
+        $task_list_pagination = $(".task_list_pagination"),
+        task_list = {}
+    $task_list_pagination = $(".task-list-pagination");
 
     function getIpAddress() {
         $.get('https://api.ipify.org?format=json')
@@ -80,8 +82,14 @@
             e.preventDefault();
             var $this = $(this);
             var _index = $this.parent().parent().parent().data("index");
-            var isSure = confirm("确定删除吗？");
-            isSure ? delete_task(_index) : null;
+
+            //询问框
+            layer.confirm('您确定要删除吗？', {
+                btn: ['确定', '取消']
+            }, function() {
+                delete_task(_index);
+                layer.msg('删除成功！', { icon: 1 });
+            });
         })
     }
 
@@ -102,16 +110,17 @@
             //对表单进行编号
             $(".task-index").each(function(index, ele) {
                 $(this).text(index + 1);
-            })
+            });
+            task_pagination();
         } else { render_no_task(); }
-        task_count();
+        $taskCount.text(task_count() + "项");
         $task_delete = $(".task-delete");
         listen_task_delete();
     }
 
     function task_count() {
         var $taskItems = $(".task-list-item");
-        $taskCount.text($taskItems.length + "项");
+        return $taskItems.length;
     }
 
     //判断是否存在任务
@@ -164,6 +173,23 @@
         return $(_task_item_template);
     }
 
+    //任务列表分页
+    function task_pagination() {
+        $task_list_pagination.pagination({
+            // totalData: task_count(),
+            // showData: 5,
+            pageCount: 5,
+            jump: true,
+            coping: true,
+            homePage: '首页',
+            endPage: '末页',
+            prevContent: '上页',
+            nextContent: '下页',
+            callback: function(api) {
+                console.log(api.getCurrent())
+            }
+        });
+    }
     //初始化
     function init() {
         getIpAddress();
