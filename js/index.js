@@ -43,7 +43,12 @@
         $new_task.content = filterXSS($task_content.val());
         $new_task.time = getCurrDate();
         $new_task.remindTime = $task_remindTime.val();
-        if (!$new_task.content) return;
+        if (!$new_task.content) {
+            layer.msg('您还没有输入任务内容呢~', function() {
+                $task_content.focus();
+            });
+            return;
+        };
         $task_content.val(null);
         $task_remindTime.val(getCurrDate());
         add_task($new_task);
@@ -53,8 +58,8 @@
     function getCurrDate() {
         var _date = new Date();
         var _newDate =
-            _date.getFullYear() + "-" +
-            fullNumber((_date.getMonth() + 1)) + "-" +
+            _date.getFullYear() + "/" +
+            fullNumber((_date.getMonth() + 1)) + "/" +
             fullNumber(_date.getDate()) + " " +
             fullNumber(_date.getHours()) + ":" +
             fullNumber(_date.getMinutes());
@@ -205,13 +210,37 @@
         $task_remindTime.datetimepicker();
     }
     $task_remindTime_selectBtn.on("click", function(e) {
-            e.preventDefault();
-            $task_remindTime.datetimepicker("show");
-        })
-        //初始化
+        e.preventDefault();
+        $task_remindTime.datetimepicker("show");
+    })
+
+    //初始化网站公告
+    function taskNoticeInit() {
+        layer.open({
+            type: 1,
+            title: "网站公告",          
+            area: '420px;',
+            shade: 0.8,
+            id: 'Cloud_taskNotice', //设定一个id，防止重复弹出
+            resize: false,
+            btn: ['去瞧瞧', '算了吧'],
+            btnAlign: 'c',
+            moveType: 1, //拖拽模式，0或者1
+            content: '<div style="padding:30px 40px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;text-align:center;">这是一个简单的管理日常待办事项的jQuery网页应用<br>本人目前正在学习前端，有什么意见或者建议，本人非常乐意和诚恳的接受。<hr>要不...去看看源码？</div>',
+            success: function(layero) {
+                var btn = layero.find('.layui-layer-btn');
+                btn.find('.layui-layer-btn0').attr({
+                    href: 'https://github.com/tzxiaomo/jQueryWebApp-TaskTodo/',
+                    target: '_blank'
+                });
+            }
+        });
+    }
+    //初始化
     function init() {
         getIpAddress();
         datetimepickerInit();
+        taskNoticeInit();
         //store.clear();
         //获取数据
         task_list = store.get("task_list") || [];
