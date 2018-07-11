@@ -8,6 +8,8 @@
         $task_delete = $(".task-delete"),
         $task_list = $(".task-list-body"),
         $task_content = $("#taskContent"),
+        $task_remindTime_selectBtn = $(".task-remindTime-select"),
+        $task_remindTime = $("#taskRemindTime"),
         $taskCount = $(".taskCount"),
         $task_list_paginationArea = $(".task-list-paginationArea"),
         $task_list_pagination = $(".task_list_pagination"),
@@ -40,9 +42,10 @@
         var $new_task = {};
         $new_task.content = filterXSS($task_content.val());
         $new_task.time = getCurrDate();
-        $new_task.ip = ipAddress;
+        $new_task.remindTime = $task_remindTime.val();
         if (!$new_task.content) return;
         $task_content.val(null);
+        $task_remindTime.val(getCurrDate());
         add_task($new_task);
     }
 
@@ -54,8 +57,7 @@
             fullNumber((_date.getMonth() + 1)) + "-" +
             fullNumber(_date.getDate()) + " " +
             fullNumber(_date.getHours()) + ":" +
-            fullNumber(_date.getMinutes()) + ":" +
-            fullNumber(_date.getSeconds());
+            fullNumber(_date.getMinutes());
         return _newDate;
     }
     //不足10补0
@@ -109,13 +111,13 @@
         })
         if (has_task()) {
             //对表单进行编号
-            $(".task-index").each(function(index, ele) {
+            $(".task-item-index").each(function(index, ele) {
                 $(this).text(index + 1);
             });
             task_pagination();
         } else { render_no_task(); }
         $taskCount.text(task_count() + "项");
-        $task_delete = $(".task-delete");
+        $task_delete = $(".task-item-delete");
         listen_task_delete();
     }
 
@@ -151,24 +153,24 @@
         if (!task_item || index === undefined) return;
         var _task_item_template = '<div class="row task-list-item"  data-index="' + index + '">' +
             '<div class="col-md-1">' +
-            '    <input type="checkbox" name="taskCheck">' +
+            '    <input type="checkbox" name="taskCheck" class="task-item-check">' +
             '</div>' +
             '<div class="col-md-1">' +
-            '    <span class="task-index"></span>' +
+            '    <span class="task-item-index"></span>' +
             '</div>' +
             '<div class="col-md-4">' +
-            '    <span class="task-content">' + task_item.content + '</span>' +
+            '    <span class="task-item-content">' + task_item.content + '</span>' +
             '</div>' +
             '<div class="col-md-2">' +
-            '    <span class="task-addTime">' + task_item.time + '</span>' +
+            '    <span class="task-item-addTime">' + task_item.time + '</span>' +
             '</div>' +
             '<div class="col-md-2">' +
-            '    <span class="task-ipAddress">' + task_item.ip + '</span>' +
+            '    <span class="task-item-remindTime">' + task_item.remindTime + '</span>' +
             '</div>' +
             '<div class="col-md-2">' +
-            '    <span class="task-actions">' +
-            '        <span class="task-action task-delete" title="删除">删除</span>' +
-            '        <span class="task-action task-detail" title="详细">详细</span>' +
+            '    <span class="task-item-actions">' +
+            '        <span class="task-item-action task-item-delete" title="删除">删除</span>' +
+            '        <span class="task-item-action task-item-detail" title="详细">详细</span>' +
             '    </span>' +
             '</div>' +
             '</div>';
@@ -189,13 +191,27 @@
             prevContent: '上页',
             nextContent: '下页',
             callback: function(api) {
-                console.log(api.getCurrent())
+                //console.log(api.getCurrent());
+                //TODO
             }
         });
     }
-    //初始化
+
+    //初始化时间选择插件
+    $.datetimepicker.setLocale('zh');
+
+    function datetimepickerInit() {
+        $task_remindTime.val(getCurrDate());
+        $task_remindTime.datetimepicker();
+    }
+    $task_remindTime_selectBtn.on("click", function(e) {
+            e.preventDefault();
+            $task_remindTime.datetimepicker("show");
+        })
+        //初始化
     function init() {
         getIpAddress();
+        datetimepickerInit();
         //store.clear();
         //获取数据
         task_list = store.get("task_list") || [];

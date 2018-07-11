@@ -28,9 +28,16 @@ input:focus {
 }
 
 .task-addInput,
+.task-remindTime,
+.task-remindTime-select,
 .task-addBtn {
     height: 50px;
     font-size: 1.6rem;
+}
+
+.task-remindTime {
+    display: inline-block;
+    min-width: 180px;
 }
 
 .task-add>.col-md-12 {
@@ -90,15 +97,15 @@ input:focus {
     color: #000;
 }
 
-.task-action {
+.task-item-action {
     cursor: pointer;
     margin: 0 5px;
 }
 
-.task-delete:hover {
+.task-item-delete:hover {
     color: red;
 }
 
-.task-detail:hover {
+.task-item-detail:hover {
     color: #5cb85c;
 }

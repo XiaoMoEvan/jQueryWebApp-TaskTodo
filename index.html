@@ -9,6 +9,7 @@
     <title>jQuery实现前端应用</title>
     <link rel="stylesheet" href="lib/cssreset/reset.css">
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="lib/datetimepicker/jquery.datetimepicker.css">
     <link rel="stylesheet" href="lib/layer/theme/default/layer.css">
     <link rel="stylesheet" href="lib/pagination/pagination.css">
     <link rel="stylesheet" href="css/index.css">
@@ -36,9 +37,11 @@
             <div class="col-md-12">
                 <div class="input-group">
                     <input type="text" id="taskContent" class="form-control task-addInput" placeholder="e.g.请输入日常任务" autofocus autocomplete="additional-name">
-                    <span class="input-group-btn">
-                        <button class="btn btn-success task-addBtn" title="添加新任务">添加新任务</button>
-                   </span>
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default task-remindTime-select">选择提醒时间：</button>
+                        <input type="text" value="" title="选择提醒时间" id="taskRemindTime" class="btn btn-default task-remindTime" />
+                        <button type="button" class="btn btn-success task-addBtn" title="添加新任务">添加新任务</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -58,7 +61,7 @@
                         <span>添加时间</span>
                     </div>
                     <div class="col-md-2">
-                        <span>IP地址</span>
+                        <span>提醒时间</span>
                     </div>
                     <div class="col-md-2">
                         <span>操作</span>
@@ -74,6 +77,7 @@
     </div>
 
     <script src="lib/jquery/dist/jquery.js"></script>
+    <script src="lib/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
     <script src="lib/xss/dist/xss.min.js"></script>
     <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="lib/layer/layer.js"></script>
