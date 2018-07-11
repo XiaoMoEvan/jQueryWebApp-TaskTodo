@@ -13,8 +13,17 @@
         $taskCount = $(".taskCount"),
         $task_list_paginationArea = $(".task-list-paginationArea"),
         $task_list_pagination = $(".task_list_pagination"),
-        task_list = {}
-    $task_list_pagination = $(".task-list-pagination");
+        task_list = {},
+        $task_list_pagination = $(".task-list-pagination"),
+        $number_of_visits = $(".number_of_visits"),
+        count_of_visits = 0;
+
+    function getCountOfVisits() {
+        count_of_visits = store.get("count_of_visits");
+        count_of_visits += 1;
+        store.set("count_of_visits", count_of_visits);
+        $number_of_visits.text(count_of_visits);
+    }
 
     function getIpAddress() {
         $.get('https://api.ipify.org?format=json')
@@ -237,8 +246,17 @@
             }
         });
     }
+
+    function consolelogInt() {
+        console.log('%c 前端小白者（Me）:UI框架王、插件王、复制粘贴王...', 'color:#009688');
+        console.log('%c 哦嚯，完蛋！也许最后前端生涯亡。', 'color:#FF5722');
+        console.log('%c =========================================', 'color:#FFB800');
+        console.log('%c 二颜（一只徘徊在学习边沿的菜鸡）', 'color:#01AAED');
+    }
     //初始化
     function init() {
+        getCountOfVisits();
+        consolelogInt();
         getIpAddress();
         datetimepickerInit();
         taskNoticeInit();
