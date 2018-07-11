@@ -9,6 +9,7 @@
         $task_list = $(".task-list-body"),
         $task_content = $("#taskContent"),
         $taskCount = $(".taskCount"),
+        $task_list_paginationArea = $(".task-list-paginationArea"),
         $task_list_pagination = $(".task_list_pagination"),
         task_list = {}
     $task_list_pagination = $(".task-list-pagination");
@@ -37,7 +38,7 @@
 
     function add_task_func() {
         var $new_task = {};
-        $new_task.content = $task_content.val();
+        $new_task.content = filterXSS($task_content.val());
         $new_task.time = getCurrDate();
         $new_task.ip = ipAddress;
         if (!$new_task.content) return;
@@ -136,6 +137,7 @@
     }
 
     function render_no_task() {
+        $task_list_paginationArea.fadeOut();
         var _no_task_template =
             '<div class="row noTask">' +
             '   <div class="col-md-12">' +
@@ -175,6 +177,7 @@
 
     //任务列表分页
     function task_pagination() {
+        $task_list_paginationArea.fadeIn();
         $task_list_pagination.pagination({
             // totalData: task_count(),
             // showData: 5,
