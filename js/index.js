@@ -76,6 +76,7 @@
         task_list.push(new_task);
         store.set("task_list", task_list);
         refresh_task_list();
+        toastr.success("新任务添加成功，请记得查看哦~");
     }
 
     //删除一个任务
@@ -218,7 +219,7 @@
     function taskNoticeInit() {
         layer.open({
             type: 1,
-            title: "网站公告",          
+            title: "网站公告",
             area: '420px;',
             shade: 0.8,
             id: 'Cloud_taskNotice', //设定一个id，防止重复弹出
@@ -241,6 +242,7 @@
         getIpAddress();
         datetimepickerInit();
         taskNoticeInit();
+        toastr.options.positionClass = 'toast-bottom-right';
         //store.clear();
         //获取数据
         task_list = store.get("task_list") || [];
