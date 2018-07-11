@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My To Do</title>
+    <link rel="stylesheet" href="lib/cssreset/reset.css">
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row task-title">
+            <div class="col-md-12">
+                <h2>我的TODO</h2>
+                <p>
+                    <span class="ipAddressArea">
+                            <span>IP：</span>
+                    <span class="ipAddress"></span>
+                    </span>
+                    <span>&nbsp;&nbsp;</span>
+                    <span class="taskCountArea">
+                        <span>任务数量：</span>
+                    <span class="taskCount"></span>
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="row task-add">
+            <div class="col-md-12">
+                <div class="input-group">
+                    <input type="text" id="taskContent" class="form-control task-addInput" placeholder="e.g.请输入日常任务" autofocus autocomplete="additional-name">
+                    <span class="input-group-btn">
+                        <button class="btn btn-success task-addBtn" title="添加新任务">添加新任务</button>
+                   </span>
+                </div>
+            </div>
+        </div>
+        <div class="row task-list">
+            <div class="col-md-12 task-list-head">
+                <div class="row">
+                    <div class="col-md-1">
+                        <input type="checkbox" name="taskCheckAll" id="taskCheckAll">
+                    </div>
+                    <div class="col-md-1">
+                        <span>序号</span>
+                    </div>
+                    <div class="col-md-4">
+                        <span>任务名称</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span>添加时间</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span>IP地址</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span>操作</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 task-list-body">
+            </div>
+        </div>
+    </div>
+
+    <script src="lib/jquery/dist/jquery.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="lib/storejs/dist/store.js"></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>
