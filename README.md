@@ -1,11 +1,23 @@
-jQueryWebApp-TaskTodo
 
 jQuery开发一个前端Todo应用
-
-项目预览地址：https://tzxiaomo.github.io/jQueryWebApp-TaskTodo/
-
-添加 layer弹窗插件 以及分页插件pagination，分页暂时没有实现
 
 ==========================================
 
 前端小白者（Me）：UI框架王、插件王、复制粘贴王...最后前端生涯亡。
+
+============================================================
+
+项目预览地址：https://tzxiaomo.github.io/jQueryWebApp-TaskTodo/
+
+版本更新：
+
+---2018.7.11 更新
+
+   1.添加bootstrapUI框架，编写项目基础前端代码。
+   
+   2.添加各种插件：layer弹窗、toastr消息提醒插件、pagination分页插件、jq表单校验、datetimepicker日期选择插件。
+
+
+---2018.7.12 更新
+
+   1.添加查看明细和编辑功能，实现表单数据校验。
