@@ -191,6 +191,8 @@
         $task_detail_form.validate();
         if (!$task_detail_form.valid()) return;
         var _formData = $task_detail_form.serializeJson();
+        _formData.content = filterXSS(_formData.content);
+        _formData.description = filterXSS(_formData.description);
         _formData.updateTime = getCurrDate();
         _formData.createTime = task_list[index].createTime;
         task_list[index] = _formData;
