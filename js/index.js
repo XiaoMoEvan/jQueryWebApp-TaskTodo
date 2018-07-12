@@ -21,6 +21,7 @@
         $task_detail_mask = $(".task-detail-mask"),
         $task_detail = $(".task-detail"),
         $task_detail_container = $(".task-detail-container"),
+        $task_detail_form,
         $task_detail_remindTime,
         $task_detail_save = $(".task-detail-save"),
         $task_detail_cancel = $(".task-detail-cancel");
@@ -153,26 +154,27 @@
             _task_detail_template = '<div class="noDetail red">数据不存在，或已经被删除！</div>';
         } else {
             var item = task_list[index];
-            _task_detail_template =
-                '<input type="hidden" name="taskIndex" value="' + index + '">' +
+            _task_detail_template = '<form name="task-detail-form" data-index="' + index + '">' +
                 '<div class="content input-group">' +
                 '   <span class="input-group-addon">' +
                 '        <span>任务名称</span>' +
                 '   </span>' +
-                '   <input type="text" value="' + item.content + '" class="form-control" name="task-content" />' +
+                '   <input type="text" placeholder="请填写任务名称" value="' + item.content + '" class="form-control" name="content" required/>' +
                 '</div>' +
                 '<div class="description">' +
-                '   <textarea name="description" class="form-control">' + item.description + '</textarea>' +
+                '   <textarea name="description" class="form-control" required>' + item.description + '</textarea>' +
                 '</div>' +
                 '<div class="remind input-group">' +
                 '   <span class="input-group-addon">' +
                 '        <span>提醒时间</span>' +
                 '   </span>' +
-                '   <input type="text" value="' + item.remindTime + '" class="remindDate form-control" name="remindDate" />' +
-                '</div>';
+                '   <input type="text" value="' + item.remindTime + '" class="remindDate form-control" name="remindTime" />' +
+                '</div>' +
+                '</form>';
         }
         $task_detail_container.html(_task_detail_template);
-        $task_detail_remindTime = $("input[name=remindDate]");
+        $task_detail_form = $("form[name=task-detail-form]");
+        $task_detail_remindTime = $("input[name=remindTime]");
         $task_detail_remindTime.datetimepicker();
     }
 
@@ -184,14 +186,14 @@
 
     function update_task_detail() {
         var itemData = {};
-        var index = $task_detail_container.find("input[name=taskIndex]").val();
+        var index = $task_detail_form.data("index");
         if (index === undefined || !task_list[index]) return;
-        itemData.content = $task_detail_container.find("input[name=task-content]").val();
-        itemData.updateTime = getCurrDate();
-        itemData.createTime = task_list[index].createTime;
-        itemData.description = $task_detail_container.find("textarea[name=description]").val();
-        itemData.remindTime = $task_detail_container.find("input[name=remindDate]").val();
-        task_list[index] = itemData;
+        $task_detail_form.validate();
+        if (!$task_detail_form.valid()) return;
+        var _formData = $task_detail_form.serializeJson();
+        _formData.updateTime = getCurrDate();
+        _formData.createTime = task_list[index].createTime;
+        task_list[index] = _formData;
         toastr.success("更新保存成功！");
         hide_task_detail();
         refresh_task_list();
@@ -358,3 +360,27 @@
     }
     init();
 })();
+
+//封装一个获取表单数据为json对象的扩展
+(function(window, $) {
+    $.fn.serializeJson = function() {
+        var serializeObj = {};
+        var array = this.serializeArray();
+        var str = this.serialize();
+        $(array).each(
+            function() {
+                if (serializeObj[this.name]) {
+                    if ($.isArray(serializeObj[this.name])) {
+                        serializeObj[this.name].push(this.value);
+                    } else {
+                        serializeObj[this.name] = [
+                            serializeObj[this.name], this.value
+                        ];
+                    }
+                } else {
+                    serializeObj[this.name] = this.value;
+                }
+            });
+        return serializeObj;
+    };
+})(window, jQuery);
