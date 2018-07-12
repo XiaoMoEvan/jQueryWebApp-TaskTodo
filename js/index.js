@@ -349,7 +349,7 @@
         consolelogInt();
         getIpAddress();
         datetimepickerInit();
-        //taskNoticeInit();
+        taskNoticeInit();
         toastr.options.positionClass = 'toast-bottom-right';
         //store.clear();
         //获取数据
