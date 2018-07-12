@@ -5,7 +5,8 @@
     var ipAddress,
         $ipAddress = $(".ipAddress"),
         $task_add_submit = $(".task-addBtn"),
-        $task_delete = $(".task-delete"),
+        $task_action_delete,
+        $task_action_detail,
         $task_list = $(".task-list-body"),
         $task_content = $("#taskContent"),
         $task_remindTime_selectBtn = $(".task-remindTime-select"),
@@ -16,7 +17,13 @@
         task_list = {},
         $task_list_pagination = $(".task-list-pagination"),
         $number_of_visits = $(".number_of_visits"),
-        count_of_visits = 0;
+        count_of_visits = 0,
+        $task_detail_mask = $(".task-detail-mask"),
+        $task_detail = $(".task-detail"),
+        $task_detail_container = $(".task-detail-container"),
+        $task_detail_remindTime,
+        $task_detail_save = $(".task-detail-save"),
+        $task_detail_cancel = $(".task-detail-cancel");
 
     function getCountOfVisits() {
         count_of_visits = store.get("count_of_visits");
@@ -29,7 +36,7 @@
         $.get('https://api.ipify.org?format=json')
             .done(function(data) {
                 ipAddress = data.ip;
-                $ipAddress.html(ipAddress);
+                $ipAddress.text(ipAddress);
             })
     }
 
@@ -50,8 +57,9 @@
     function add_task_func() {
         var $new_task = {};
         $new_task.content = filterXSS($task_content.val());
-        $new_task.time = getCurrDate();
+        $new_task.createTime = getCurrDate();
         $new_task.remindTime = $task_remindTime.val();
+        $new_task.description = "";
         if (!$new_task.content) {
             layer.msg('您还没有输入任务内容呢~', function() {
                 $task_content.focus();
@@ -96,7 +104,7 @@
     }
 
     function listen_task_delete() {
-        $task_delete.off("click").on("click", function(e) {
+        $task_action_delete.off("click").on("click", function(e) {
             e.preventDefault();
             var $this = $(this);
             var _index = $this.parent().parent().parent().data("index");
@@ -109,6 +117,84 @@
                 layer.msg('删除成功！', { icon: 1 });
             });
         })
+    }
+
+
+    //查看任务详细
+    function listen_task_detail() {
+        $task_action_detail.off("click").on("click", function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            var index = $this.parent().parent().parent().data("index");
+            show_task_detail(index);
+        })
+    }
+
+    //取消事件
+    $task_detail_cancel.on("click", function(e) {
+        e.preventDefault();
+        hide_task_detail();
+    })
+
+    function show_task_detail(index) {
+        $task_detail_mask.fadeIn();
+        $task_detail.fadeIn();
+        render_task_detail(index);
+    }
+
+    function hide_task_detail() {
+        $task_detail_mask.hide();
+        $task_detail.hide();
+    }
+
+    function render_task_detail(index) {
+        var _task_detail_template = '';
+        if (index === undefined || !task_list[index]) {
+            _task_detail_template = '<div class="noDetail red">数据不存在，或已经被删除！</div>';
+        } else {
+            var item = task_list[index];
+            _task_detail_template =
+                '<input type="hidden" name="taskIndex" value="' + index + '">' +
+                '<div class="content input-group">' +
+                '   <span class="input-group-addon">' +
+                '        <span>任务名称</span>' +
+                '   </span>' +
+                '   <input type="text" value="' + item.content + '" class="form-control" name="task-content" />' +
+                '</div>' +
+                '<div class="description">' +
+                '   <textarea name="description" class="form-control">' + item.description + '</textarea>' +
+                '</div>' +
+                '<div class="remind input-group">' +
+                '   <span class="input-group-addon">' +
+                '        <span>提醒时间</span>' +
+                '   </span>' +
+                '   <input type="text" value="' + item.remindTime + '" class="remindDate form-control" name="remindDate" />' +
+                '</div>';
+        }
+        $task_detail_container.html(_task_detail_template);
+        $task_detail_remindTime = $("input[name=remindDate]");
+        $task_detail_remindTime.datetimepicker();
+    }
+
+    //保存更新
+    $task_detail_save.on("click", function(e) {
+        e.preventDefault();
+        update_task_detail();
+    })
+
+    function update_task_detail() {
+        var itemData = {};
+        var index = $task_detail_container.find("input[name=taskIndex]").val();
+        if (index === undefined || !task_list[index]) return;
+        itemData.content = $task_detail_container.find("input[name=task-content]").val();
+        itemData.updateTime = getCurrDate();
+        itemData.createTime = task_list[index].createTime;
+        itemData.description = $task_detail_container.find("textarea[name=description]").val();
+        itemData.remindTime = $task_detail_container.find("input[name=remindDate]").val();
+        task_list[index] = itemData;
+        toastr.success("更新保存成功！");
+        hide_task_detail();
+        refresh_task_list();
     }
 
     //刷新任务列表
@@ -132,8 +218,10 @@
             task_pagination();
         } else { render_no_task(); }
         $taskCount.text(task_count() + "项");
-        $task_delete = $(".task-item-delete");
+        $task_action_delete = $(".task-item-delete");
+        $task_action_detail = $(".task-item-detail");
         listen_task_delete();
+        listen_task_detail();
     }
 
     function task_count() {
@@ -177,7 +265,7 @@
             '    <span class="task-item-content">' + task_item.content + '</span>' +
             '</div>' +
             '<div class="col-md-2">' +
-            '    <span class="task-item-addTime">' + task_item.time + '</span>' +
+            '    <span class="task-item-addTime">' + task_item.createTime + '</span>' +
             '</div>' +
             '<div class="col-md-2">' +
             '    <span class="task-item-remindTime">' + task_item.remindTime + '</span>' +
@@ -249,7 +337,7 @@
 
     function consolelogInt() {
         console.log('%c 前端小白者（Me）:UI框架王、插件王、复制粘贴王...', 'color:#009688');
-        console.log('%c 哦嚯，完蛋！也许最后前端生涯亡。', 'color:#FF5722');
+        console.log('%c 哦嚯，完蛋！结果最后前端生涯亡。', 'color:#FF5722');
         console.log('%c =========================================', 'color:#FFB800');
         console.log('%c 二颜（一只徘徊在学习边沿的菜鸡）', 'color:#01AAED');
     }
@@ -259,7 +347,7 @@
         consolelogInt();
         getIpAddress();
         datetimepickerInit();
-        taskNoticeInit();
+        //taskNoticeInit();
         toastr.options.positionClass = 'toast-bottom-right';
         //store.clear();
         //获取数据

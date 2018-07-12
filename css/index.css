@@ -109,3 +109,65 @@ input:focus {
 .task-item-detail:hover {
     color: #5cb85c;
 }
+
+.task-detail-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, .8);
+    z-index: 3;
+    display: none;
+}
+
+.task-detail {
+    z-index: 4;
+    position: absolute;
+    top: 30%;
+    left: 40%;
+    background: #fff;
+    width: 350px;
+    border-radius: 5px;
+    padding: 30px 20px;
+    padding-top: 0;
+    display: none;
+}
+
+.task-detail>h3 {
+    text-align: center;
+}
+
+.task-detail>.task-detail-container {
+    margin-bottom: 20px;
+}
+
+.task-detail-container>.content {
+    margin-bottom: 5px;
+}
+
+.content>.task-title {
+    color: #000;
+}
+
+.task-detail-container>.description {
+    margin-bottom: 5px;
+}
+
+textarea[name=description] {
+    resize: none;
+    height: 100px;
+}
+
+.task-detail-buttons>button:first-child {
+    margin-right: 10px;
+}
+
+.content>span,
+.remind>span {
+    border-radius: 0;
+}
+
+.remind>.remindDate:focus {
+    outline: none;
+}
