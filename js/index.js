@@ -337,7 +337,7 @@
         });
     }
 
-    function consolelogInt() {
+    function consoleInit() {
         console.log('%c 前端小白者（Me）:UI框架王、插件王、复制粘贴王...', 'color:#009688');
         console.log('%c 哦嚯，完蛋！结果最后前端生涯亡。', 'color:#FF5722');
         console.log('%c =========================================', 'color:#FFB800');
@@ -346,7 +346,7 @@
     //初始化
     function init() {
         getCountOfVisits();
-        consolelogInt();
+        consoleInit();
         getIpAddress();
         datetimepickerInit();
         taskNoticeInit();
