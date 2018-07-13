@@ -338,22 +338,22 @@
             }
         });
     }
-
-    function consoleInit() {
-        console.log('%c 前端小白者（Me）:UI框架王、插件王、复制粘贴王...', 'color:#009688');
-        console.log('%c 哦嚯，完蛋！结果最后前端生涯亡。', 'color:#FF5722');
-        console.log('%c =========================================', 'color:#FFB800');
-        console.log('%c 二颜（一只徘徊在学习边沿的菜鸡）', 'color:#01AAED');
-    }
+    
+    function warnYourself() {
+          console.log('%c 前端小白者（Me）:UI框架王、插件王、复制粘贴王...', 'color:#009688');
+          console.log('%c 哦嚯，完蛋！结果最后前端生涯亡。', 'color:#FF5722');
+          console.log('%c =========================================', 'color:#FFB800');
+          console.log('%c 二颜（一只徘徊在学习边沿的菜鸡）', 'color:#01AAED');
+      }
+    
     //初始化
     function init() {
         getCountOfVisits();
-        consoleInit();
+        warnYourself();
         getIpAddress();
         datetimepickerInit();
         taskNoticeInit();
-        toastr.options.positionClass = 'toast-bottom-right';
-        store.clear();
+        toastr.options.positionClass = 'toast-bottom-right';   
         //获取数据
         task_list = store.get("task_list") || [];
         if (task_list.length)
