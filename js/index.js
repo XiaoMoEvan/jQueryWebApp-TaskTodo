@@ -353,7 +353,7 @@
         datetimepickerInit();
         taskNoticeInit();
         toastr.options.positionClass = 'toast-bottom-right';
-        //store.clear();
+        store.clear();
         //获取数据
         task_list = store.get("task_list") || [];
         if (task_list.length)
